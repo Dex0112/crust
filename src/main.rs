@@ -1,5 +1,4 @@
-struct Node {
-    token: Token,
+struct Node {    token: Token,
     left: Option<Box<Node>>,
     right: Option<Box<Node>>,
 }
@@ -70,7 +69,9 @@ fn evaluate(node: Option<Box<Node>>) -> f64 {
 
 #[cfg(test)]
 mod test {
-    use super::{Token, Node};
+    use std::num::NonZeroI8;
+
+    use super::{Node, Token};
 
     #[test]
     fn tokenize_all_operators() {
@@ -112,7 +113,7 @@ mod test {
             Token::Add,
             Token::Number(9.0),
         ];
-        
+
         let expression: &str = &"33+3+354+5+9";
 
         assert_eq!(tokens, super::tokenize(expression));
@@ -169,23 +170,205 @@ mod test {
 
     #[test]
     fn evaluate_all_operators() {
+        let head = Some(Box::new(Node {
+            left: Some(Box::new(Node {
+                left: Some(Box::new(Node {
+                    left: Some(Box::new(Node {
+                        left: Some(Box::new(Node {
+                            left: Some(Box::new(Node {
+                                left: None,
+                                right: None,
+                                token: Token::Number(34.0),
+                            })),
+                            right: Some(Box::new(Node {
+                                left: None,
+                                right: None,
+                                token: Token::Number(5.0),
+                            })),
+                            token: Token::Divide,
+                        })),
+                        right: Some(Box::new(Node {
+                            left: Some(Box::new(Node {
+                                left: Some(Box::new(Node {
+                                    left: None,
+                                    right: None,
+                                    token: Token::Number(12.0),
+                                })),
+                                right: Some(Box::new(Node {
+                                    left: None,
+                                    right: None,
+                                    token: Token::Number(3.0),
+                                })),
+                                token: Token::Multiply,
+                            })),
+                            right: Some(Box::new(Node {
+                                left: None,
+                                right: None,
+                                token: Token::Number(2.0),
+                            })),
+                            token: Token::Divide,
+                        })),
+                        token: Token::Add,
+                    })),
+                    right: Some(Box::new(Node {
+                        left: None,
+                        right: None,
+                        token: Token::Number(6.0),
+                    })),
+                    token: Token::Subtract,
+                })),
+                right: Some(Box::new(Node {
+                    left: Some(Box::new(Node {
+                        left: None,
+                        right: None,
+                        token: Token::Number(33.0),
+                    })),
+                    right: Some(Box::new(Node {
+                        left: None,
+                        right: None,
+                        token: Token::Number(3.0),
+                    })),
+                    token: Token::Divide,
+                })),
+                token: Token::Add,
+            })),
+            right: Some(Box::new(Node {
+                left: None,
+                right: None,
+                token: Token::Number(13.0),
+            })),
+            token: Token::Add,
+        }));
+
+        let result: f64 = 40.8;
+
+        assert_eq!(result, super::evaluate(head));
     }
 
     #[test]
     fn evaluate_addition() {
+        //15+21+247
+
+        let head = Some(Box::new(Node {
+            left: Some(Box::new(Node {
+                left: Some(Box::new(Node {
+                    left: Some(Box::new(Node {
+                        left: None,
+                        right: None,
+                        token: Token::Number(15.0),
+                    })),
+                    right: Some(Box::new(Node {
+                        left: None,
+                        right: None,
+                        token: Token::Number(21.0),
+                    })),
+                    token: Token::Add,
+                })),
+                right: None,
+                token: Token::Unrecognized,
+            })),
+            right: Some(Box::new(Node {
+                left: None,
+                right: None,
+                token: Token::Number(247.0),
+            })),
+            token: Token::Add,
+        }));
+
+        let result: f64 = 283.0;
+
+        assert_eq!(result, super::evaluate(head));
     }
 
     #[test]
     fn evaluate_subtraction() {
+        // 287-73-8
+
+        let head = Some(Box::new(Node {
+            left: Some(Box::new(Node {
+                left: Some(Box::new(Node {
+                    left: None,
+                    right: None,
+                    token: Token::Number(287.0),
+                })),
+                right: Some(Box::new(Node {
+                    left: None,
+                    right: None,
+                    token: Token::Number(73.0),
+                })),
+                token: Token::Subtract,
+            })),
+            right: Some(Box::new(Node {
+                left: None,
+                right: None,
+                token: Token::Number(8.0),
+            })),
+            token: Token::Subtract,
+        }));
+
+        let result: f64 = 206.0;
+
+        assert_eq!(result, super::evaluate(head));
     }
 
     #[test]
     fn evaluate_multiplication() {
+        //47*52*100
 
+        let head = Some(Box::new(Node {
+            left: Some(Box::new(Node {
+                left: Some(Box::new(Node {
+                    left: None,
+                    right: None,
+                    token: Token::Number(47.0),
+                })),
+                right: Some(Box::new(Node {
+                    left: None,
+                    right: None,
+                    token: Token::Number(52.0),
+                })),
+                token: Token::Multiply,
+            })),
+            right: Some(Box::new(Node {
+                left: None,
+                right: None,
+                token: Token::Number(100.0),
+            })),
+            token: Token::Multiply,
+        }));
+
+        let result: f64 = 244400.0;
+
+        assert_eq!(result, super::evaluate(head));
     }
 
     #[test]
     fn evaluate_division() {
+        let head = Some(Box::new(Node {
+            left: Some(Box::new(Node {
+                left: Some(Box::new(Node {
+                    left: None,
+                    right: None,
+                    token: Token::Number(47.0),
+                })),
+                right: Some(Box::new(Node {
+                    left: None,
+                    right: None,
+                    token: Token::Number(2.0),
+                })),
+                token: Token::Divide,
+            })),
+            right: Some(Box::new(Node {
+                left: None,
+                right: None,
+                token: Token::Number(3.0),
+            })),
+            token: Token::Divide,
+        }));
 
+
+        let result: f64 = 58.75; 
+
+        assert_eq!(result, super::evaluate(head));
     }
 }
