@@ -79,8 +79,7 @@ impl Lexer {
     fn read_int(&mut self) -> i32 {
         let pos = self.position;
  
-        //Floating point numbers aren't going to work
-        while self.ch.is_ascii_digit() && self.peek().is_ascii_digit() {
+        while self.ch.is_ascii_digit() && self.peek().is_ascii_whitespace() {
             self.read_char();
         }
 
