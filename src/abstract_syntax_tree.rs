@@ -6,8 +6,12 @@ struct Node {
     right: Option<Box<Node>>,
 }
 
+//I don't really know how to implement this but I want to try to get a working iplementation by
+//myself
+//I could try to make the implementation as just a function but then work in some pesky variables
+//into fields like stacks 
 struct Ast {
-
+    
 }
 
 // Generate tree
