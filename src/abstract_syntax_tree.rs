@@ -1,7 +1,13 @@
+use crate::Token;
+
 struct Node {    
     token: Token,
     left: Option<Box<Node>>,
     right: Option<Box<Node>>,
+}
+
+struct Ast {
+
 }
 
 // Generate tree

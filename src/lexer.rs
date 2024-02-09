@@ -13,7 +13,6 @@ pub enum Token {
     //Assignemnt
     //I am currently unsure of how to detect/handle this
     //Use identifiers and store them in variables just like how you store user variables
-    //Unrecognized,
     //Sin, Cos, Tan, etc
 }
 
