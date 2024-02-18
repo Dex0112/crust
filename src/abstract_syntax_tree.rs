@@ -1,6 +1,7 @@
+use crate::Lexer;
 use crate::Token;
 
-struct Node {    
+struct Node {
     token: Token,
     left: Option<Box<Node>>,
     right: Option<Box<Node>>,
@@ -9,9 +10,50 @@ struct Node {
 //I don't really know how to implement this but I want to try to get a working iplementation by
 //myself
 //I could try to make the implementation as just a function but then work in some pesky variables
-//into fields like stacks 
+//into fields like stacks
+
 struct Ast {
-    
+    head: Option<Box<Node>>,
+}
+
+impl Ast {
+    fn new(expression: String) {
+        println!("New Abstract Syntax Tree");
+
+        //Generate tree
+
+        let mut stack: Vec<Token> = Vec::new();
+
+        //Parenthesis could work by adding like a base_precedence and it would add to
+        //current_precedence
+        let mut current_precedence: Option<i32> = None;
+
+        let mut lexer = Lexer::new(expression);
+
+        loop {
+            let token = lexer.next_token();
+
+            if token == Token::Eol {
+                break;
+            }
+
+            let precedence: Option<i32> = match token {
+                Token::Add => Some(1),
+                Token::Subtract => Some(1),
+                Token::Multiply => Some(2),
+                Token::Divide => Some(2),
+                _ => None,
+            };
+
+            if precedence.is_some() {
+                if precedence > current_precedence {
+                    current_precedence = precedence;
+                }
+            }
+
+            stack.push(token);
+        }
+    }
 }
 
 // Generate tree
