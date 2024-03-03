@@ -11,7 +11,7 @@ fn main() {
 
     println!("Input: {}", expression);
 
-    print!("Output: ");
+    println!("Output: ");
 
     loop {
         let token = lexer.next_token();
@@ -20,7 +20,7 @@ fn main() {
             break;
         }
 
-        print!("{}", token);
+        println!("{}", token);
     }
 
     println!("\nGood bye");

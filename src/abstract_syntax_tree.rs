@@ -45,17 +45,22 @@ impl Ast {
                 _ => None,
             };
 
-            if precedence.is_some() {
-                if precedence > current_precedence {
+            if let Some(precedence_value) = precedence {
+                if precedence_value >= current_precedence.unwrap_or(precedence_value - 1) {
                     current_precedence = precedence;
+                } else {
+                    // Evaluate stack
                 }
             }
 
             stack.push(token);
         }
-    }
-}
 
+        //Evaluate remaining stack
+
+    }
+
+}
 // Generate tree
 // 1. Find the operator
 // 2. Check precedence
