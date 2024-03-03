@@ -1,6 +1,6 @@
-## Crust is a calculator written in rust
+# Crust is a calculator written in rust
 
-# Features
+## Features
 - Input parsing
 - variable support
 - Functions
